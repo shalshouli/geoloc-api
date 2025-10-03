@@ -1,1 +1,5 @@
-#map { height: 180px; }
+#map { height: 1080px; }
+
+#bindPopup {
+    font-size: medium;
+}
