@@ -5,9 +5,20 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 let brocanteIcon = L.icon({
     iconUrl: "images/ancre.png",
-    iconSize: [40, 70],
-    iconAnchor: [40, 70],
+    iconSize: [40, 40],
+    iconAnchor: [20, 10],
 });
+
+let popup = L.popup();
+
+function onMapClick(e) {
+  popup
+    .setLatLng(e.latlng)
+    .setContent("You clicked the map at " + e.latlng.toString())
+    .openOn(map);
+}
+
+map.on('click', onMapClick);
 
 L.marker([48.855053, 2.27801]).addTo(map).bindPopup("Bienvenue à l'ICAN ! 🖥️");
 
