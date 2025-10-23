@@ -1,0 +1,4 @@
+[
+  { "name": "Café de Flore", "lat": 48.8546, "lng": 2.3339, "type": "cafe" },
+  { "name": "Musée d'Orsay", "lat": 48.86, "lng": 2.3266, "type": "musee" }
+]

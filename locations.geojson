@@ -1,0 +1,9 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [2.3339, 48.8546] },
+      "properties": { "name": "Café de Flore" }
+    }
+  ]
+}

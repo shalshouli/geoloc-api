@@ -4,9 +4,9 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 let brocanteIcon = L.icon({
-    iconUrl: "images/ancre.png",
-    iconSize: [40, 40],
-    iconAnchor: [20, 10],
+  iconUrl: "images/ancre.png",
+  iconSize: [40, 40],
+  iconAnchor: [20, 10],
 });
 
 let popup = L.popup();
@@ -18,7 +18,7 @@ function onMapClick(e) {
     .openOn(map);
 }
 
-map.on('click', onMapClick);
+map.on("click", onMapClick);
 
 L.marker([48.855053, 2.27801]).addTo(map).bindPopup("Bienvenue à l'ICAN ! 🖥️");
 
@@ -44,3 +44,59 @@ let circle = L.circle([48.854, 2.349], {
   fillOpacity: 0.2,
   radius: 1000,
 }).addTo(map);
+
+map.on("click", function (e) {
+  L.marker(e.latlng).addTo(map).bindPopup("Nouveau point");
+});
+
+let markersLayer = L.layerGroup().addTo(map);
+let dataCache = []; // on garde les données chargées
+
+fetch("locations.json")
+  .then((r) => r.json())
+  .then((data) => {
+    dataCache = data;
+    renderByType(); // affichage par défaut
+  });
+
+function renderByType(type = null) {
+  markersLayer.clearLayers(); // on repart de zéro
+  let locations = dataCache;
+  if (type) {
+    locations = dataCache.filter((location) => location.type === type);
+  }
+  locations.forEach((location) => {
+    L.marker([location.lat, location.lng])
+      .addTo(markersLayer)
+      .bindPopup(`<b>${location.name}</b><br>${location.type}`);
+  });
+}
+
+// branchement des boutons
+document.querySelectorAll("button[data-type]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    renderByType(btn.dataset.type);
+  });
+});
+
+const msg = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+  } else {
+    msg.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function success(position) {
+  L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
+    .bindPopup(`Vous êtes ici ! (Latitude:
+    ${position.coords.latitude} +
+    "<br>Longitude :
+    ${position.coords.longitude})`);
+}
+
+function error() {
+  alert("Sorry, no position available.");
+}
